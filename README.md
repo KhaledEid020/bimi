@@ -1,5 +1,66 @@
 # SOC Chat Platform - Full System Guide
 
+
+```mermaid
+erDiagram
+    AUTH_USERS ||--o{ AUTH_REFRESH_TOKENS : has
+    AUTH_USERS ||--o{ CHAT_SESSION_META : owns
+    AUTH_USERS ||--o{ PUBLIC_SESSIONS : logical_user_id_match
+    PUBLIC_SESSIONS ||--o{ PUBLIC_EVENTS : contains
+
+    AUTH_USERS {
+      uuid id PK
+      string username
+      string email
+      string password_hash
+      string role
+      bool is_active
+      timestamptz created_at
+      timestamptz updated_at
+    }
+
+    AUTH_REFRESH_TOKENS {
+      uuid id PK
+      uuid user_id FK
+      string token_hash
+      timestamptz expires_at
+      timestamptz revoked_at
+      uuid replaced_by_token_id
+      timestamptz created_at
+    }
+
+    CHAT_SESSION_META {
+      uuid id PK
+      string app_name
+      uuid user_id FK
+      string session_id
+      string title
+      bool archived
+      timestamptz created_at
+      timestamptz updated_at
+      timestamptz last_message_at
+    }
+
+    PUBLIC_SESSIONS {
+      string id
+      string app_name
+      string user_id
+      json state
+      timestamptz last_update_time
+    }
+
+    PUBLIC_EVENTS {
+      string id
+      string session_id
+      string author
+      json content
+      json actions
+      timestamptz timestamp
+    }
+
+```
+
+
 This document explains the full system in simple language:
 - what each project does
 - where data is stored
