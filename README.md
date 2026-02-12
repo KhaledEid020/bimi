@@ -1,5 +1,33 @@
 # SOC Chat Platform - Full System Guide
 
+```mermaid
+flowchart TB
+  DB[(Postgres DB: session)]
+
+  subgraph AUTH_SCHEMA["Schema: auth"]
+    T1[users]
+    T2[refresh_tokens]
+  end
+
+  subgraph CHAT_SCHEMA["Schema: chat"]
+    T3[session_meta]
+  end
+
+  subgraph PUBLIC_SCHEMA["Schema: public (ADK)"]
+    T4[sessions]
+    T5[events]
+    T6[app_states]
+    T7[user_states]
+    T8[adk_internal_metadata]
+  end
+
+  DB --> AUTH_SCHEMA
+  DB --> CHAT_SCHEMA
+  DB --> PUBLIC_SCHEMA
+
+```
+
+
 
 ```mermaid
 erDiagram
